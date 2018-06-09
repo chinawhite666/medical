@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <title>登陆/8</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/css/form-elements.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+		<script type="text/javascript" src="./dist/nebulas.js"></script>
+
+		<script type="text/javascript" src="./dist/nebPay.js"></script>
+		<script src="dist/spop.min.js"></script>
+		<link href="dist/spop.min.css" rel="stylesheet"/>
+    	
+		
+        <style type="text/css">
+			#table table {
+				width: 100%;
+				font-size: 14px;
+				border: 1px solid #eee
+			}
+			
+			#table {
+				padding: 0 10px;
+			}
+			
+			table thead th {
+				background: #f5f5f5;
+				padding: 10px;
+				text-align: left;
+			}
+			
+			table tbody td {
+				padding: 10px;
+				text-align: left;
+				border-bottom: 1px solid #eee;
+				border-right: 1px solid #eee;
+			}
+			
+			table tbody td span {
+				margin: 0 10px;
+				cursor: pointer;
+			}
+			
+			.delete {
+				color: red;
+			}
+			
+			.edit {
+				color: #008cd5;
+			}
+			
+			.add {
+				border: 1px solid #eee;
+				margin: 10px 0;
+				padding: 15px;
+			}
+			
+			input {
+				border: 1px solid #ccc;
+				padding: 5px;
+				border-radius: 3px;
+				margin-right: 15px;
+			}
+			
+			button {
+				background: #008cd5;
+				border: 0;
+				padding: 4px 15px;
+				border-radius: 3px;
+				color: #fff;
+			}
+			
+			#mask {
+				background: rgba(0, 0, 0, .5);
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				z-index: 4;
+				top: 0;
+				left: 0;
+			}
+			
+			.mask {
+				width: 300px;
+				height: 250px;
+				background: rgba(255, 255, 255, 1);
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+				z-index: 47;
+				border-radius: 5px;
+			}
+			
+			.title {
+				padding: 10px;
+				border-bottom: 1px solid #eee;
+			}
+			
+			.title span {
+				float: right;
+				cursor: pointer;
+			}
+			
+			.content {
+				padding: 10px;
+			}
+			
+			.content input {
+				width: 270px;
+				margin-bottom: 15px;
+			}
+		</style>
+		<script>
+			var number=1;
+			String.prototype.Trim = function(){   
+			return this.replace(/(^\s*)|(\s*$)/g, "");   
+			}   
+			String.prototype.LTrim = function(){   
+			return this.replace(/(^\s*)/g, "");   
+			}   
+			String.prototype.RTrim = function() {   
+			return this.replace(/(\s*$)/g, "");   
+			}  
+			var  pop =function() {
+			spop('<h4 class="spop-title">演示账号——洪医生id</h4>n1FDgHUquS4vEewpNfdZdH4h468wzj5jqrd', 'success');
+			}
+			window.onload=pop;
+			var dappContactAddress = "n1zfYTUZTva1ak7LXDRYo4qfJdtACJatGh5";
+    		var nebulas = require("nebulas"), Account = Account, neb = new nebulas.Neb();
+    		neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+
+
+    		var NebPay = require("nebpay");     //https://github.com/nebulasio/nebPay
+    		var nebPay = new NebPay();
+			var serialNumber;
+			var from = dappContactAddress;
+			var to = dappContactAddress;
+			var value = "0";
+      		var nonce = "0"
+        	var gas_price = "1000000";
+			var gas_limit = "2000000";
+		function pat(){
+			for(var z=0;z<20;z++){
+				
+				app.newsList.splice(0, 1);//调试 跟踪参数
+			}
+			
+		
+		var a =document.getElementById("docadd");
+			a.style.display="none";
+			
+			
+			var b =document.getElementById("inputid");
+			var getid=b.value.LTrim();//空格要小心
+			if(getid){
+
+				showLoading({
+				title:"正在加载",
+				mask:true,
+				success:function (res) {
+					console.warn(JSON.stringify(res))
+				}
+				});
+				setTimeout(function(){
+					hideLoading()
+				},4000);
+
+				}
+				else{
+					showToast({
+					title:"输入不能为空",
+					icon:'loading',
+					duration:1000,
+					mask:true,
+					success:function (res) {
+						console.warn(JSON.stringify(res))
+					}
+					});
+					}
+			var callFunction = "getall";
+			var callArgs = "[\""+getid+"\"]";
+
+			var contract = {
+            "function": callFunction,
+            "args": callArgs
+			}
+			
+			neb.api.call(from, dappContactAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+            var result = resp.result;
+            
+			result = JSON.parse(result);
+			for( var c=0;c<10;c++){
+				if(result[c]){
+					app.newsList.push({
+							title: result[c].content,
+							user: result[c].id,
+							dates: result[c].date,
+							id:number++
+						})
+
+				}
+
+
+			}
+
+			}).catch(function (err) {console.log("error :" + err.message);}) 
+
+
+
+
+
+
+		}	
+		function doc(){
+			for(var z=0;z<20;z++){
+				
+				app.newsList.splice(0, 1);//调试 跟踪参数
+			}
+	
+
+			
+
+
+			var a =document.getElementById("docadd");
+			a.style.display="block";
+			var b =document.getElementById("inputid");
+			var getid=b.value.LTrim();
+			if(getid){
+
+			showLoading({
+            title:"正在加载",
+            mask:true,
+            success:function (res) {
+                console.warn(JSON.stringify(res))
+            }
+			});
+			setTimeout(function(){
+				hideLoading()
+			},4000);
+
+			}
+			else{
+				showToast({
+				title:"输入不能为空",
+				icon:'loading',
+				duration:1000,
+				mask:true,
+				success:function (res) {
+					console.warn(JSON.stringify(res))
+				}
+				});
+				}
+			var callFunction = "getall";
+			var callArgs = "[\"" +getid+"\"]";
+			var contract = {
+            "function": callFunction,
+            "args": callArgs
+			}
+			
+			neb.api.call(from, dappContactAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+            var result = resp.result;
+            
+			result = JSON.parse(result);
+			for( var c=0;c<10;c++){
+				if(result[c]){
+					app.newsList.push({
+							title: result[c].content,
+							user: result[c].id,
+							dates: result[c].date,
+							id:number++
+						})
+
+				}
+
+
+			}
+
+			}).catch(function (err) {console.log("error :" + err.message);}) 
+		
+
+
+		}
+		
+		</script>
+    </head>
+
+    <body>
+
+        <!-- Content -->
+        <div class="top-content">
+        	
+            <div class="inner-bg">
+                <div class="container">
+                	
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                        	<a class="logo" href="index.html"></a>
+                            <h1><strong>nubulas</strong> 星云医疗链</h1>
+                            <div class="description">
+                            	
+                            </div>
+                            <div class="top-big-link">
+									<input type="text" id="inputid" name="title" value="" placeholder="患者或医生id（id即为nas钱包地址）" style="width: 300px;"/>
+								<a class="btn btn-link-1 launch-modal" href="#" onclick="doc()" >医生</a>
+								<a class="btn btn-link-1 launch-modal" href="#" onclick="pat()">患者</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                
+                    
+                </div>
+            </div>
+            
+        </div>
+        <div id="table" style="color: #040607;" >
+			<div class="add"  id="docadd" style="display: none;">
+				<input type="text" v-model="addDetail.title" name="title" value="" placeholder="患者id" style="width: 300px;"/>
+				<input type="text" v-model="addDetail.user" name="user" value="" placeholder="症状及对策"  style="width: 800px;"/>
+				<input type="text" v-model="addDetail.dates" name="date" value="" placeholder="发布时间" />
+				<button @click="adddetail">新增</button>
+			</div>
+			<table cellpadding="0" cellspacing="0">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>症状及对策</th>
+						<th>患者id</th>
+						<th>发布时间</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(item,index) in newsList">
+						<td width="5%">{{index+1}}</td>
+						<td>{{item.title}}</td>
+						<td width="10%">{{item.user}}</td>
+						<td width="15%">{{item.dates}}</td>
+						
+					</tr>
+				</tbody>
+			</table>
+			<div id="mask" v-if="editlist">
+				<div class="mask">
+					<div class="title">
+						编辑
+						<span @click="editlist=false">
+							X
+						</span>
+					</div>
+					<div class="content">
+						<input type="text" v-model="editDetail.title" name="title" value="" placeholder="标题" />
+						<input type="text" v-model="editDetail.user" name="user" value="" placeholder="发布人" />
+						<input type="date" v-model="editDetail.dates" name="date" value="" placeholder="发布时间" />
+						<button @click="update">更新</button>
+						<button @click="editlist=false">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var app = new Vue({
+				el: '#table',
+				data: {
+					addDetail: {},
+					editlist: false,
+					editDetail: {},
+					newsList: [],
+					editid:''
+				},
+				mounted() {
+
+
+				},
+				methods: {
+
+					//新增
+					adddetail() {
+						//这里的思路应该是把this.addDetail传给服务端，然后加载列表this.newsList
+						//this.newsList.push(this.addDetail)
+						var to = dappContactAddress;
+						var value = "0";
+						var nonce = "0"
+						var gas_price = "1000000";
+						var gas_limit = "2000000";
+						var number=0;
+						var callFunction = "save";
+						var callArgs = "[\"" +this.addDetail.title+ "\",\""+this.addDetail.user+"\",\""+this.addDetail.dates+"\"]";
+						serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+							listener: function (resp) {
+								console.log("thecallback is " + resp)
+								if(typeof resp == "string"){
+								console.log("reject! cancel");
+								alert("已取消上传,那再来一次吧")
+							
+								}else{
+									
+					
+									alert("上传成功！");
+								}
+							}
+						});	
+						this.newsList.push({
+							title: this.addDetail.user,
+							user: this.addDetail.title,
+							dates: this.addDetail.dates,
+							id:   number++
+						})
+
+						//axios.post('url',this.addDetail).then((res) =>{
+						//若返回正确结果，清空新增输入框的数据
+						//this.addDetail.title = ""
+						//this.addDetail.user = ""
+						//this.addDetail.dates = ""
+						//})
+
+					},
+					//删除
+					deletelist(id, i) {
+						this.newsList.splice(i, 1);
+						//这边可以传id给服务端进行删除  ID = id
+						//axios.get('url',{ID:id}).then((res) =>{
+						//			加载列表				
+						//})
+					},
+					//编辑
+					edit(item) {
+						console.log(item)
+						this.editDetail = {
+							title: item.title,
+							user: item.user,
+							dates: item.dates,
+							id: item.id
+						}
+						this.editlist = true
+						this.editid = item.id
+						
+					},
+					//确认更新
+					update() {
+						//编辑的话，也是传id去服务端
+						//axios.get('url',{ID:id}).then((res) =>{
+						//			加载列表				
+						//})
+						let _this= this
+						for(let i = 0; i < _this.newsList.length; i++) {
+							if(_this.newsList[i].id ==this.editid) {
+								_this.newsList[i] = {
+									title: _this.editDetail.title,
+									user: _this.editDetail.user,
+									dates: _this.editDetail.dates,
+									id: this.editid
+								}
+								this.editlist = false
+							}
+						}
+					}
+				}
+			})
+		</script>
+        <!-- MODAL -->
+        <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="modal-login-label" aria-hidden="true">
+        	<div class="modal-dialog">
+        		<div class="modal-content">
+        			
+        			<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal">
+        					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        				</button>
+        				<h3 class="modal-title" id="modal-login-label">Login to our site</h3>
+        				<p>Enter your username and password to log on:</p>
+        			</div>
+        			
+        			<div class="modal-body">
+        				
+	                    <form role="form" action="" method="post" class="login-form">
+	                    	<div class="form-group">
+	                    		<label class="sr-only" for="form-username">医生</label>
+	                        	医生<input type="radio" name="form-username" placeholder="Username..." class="form-username form-control" id="form-username">
+							</div>
+							<div class="form-group">
+	                    		<label class="sr-only" for="form-username">病人</label>
+	                        	<input type="radio" name="form-username" placeholder="Username..." class="form-username form-control" id="form-username">
+	                        </div>
+	                        <div class="form-group">
+	                        	<label class="sr-only" for="form-password">Password</label>
+	                        	<input type="password" name="form-password" placeholder="Password..." class="form-password form-control" id="form-password">
+	                        </div>
+	                        <button type="submit" class="btn">Sign in!</button>
+	                    </form>
+	                    
+        			</div>
+        			
+        		</div>
+        	</div>
+        </div>
+
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+		<script src="assets/js/scripts.js"></script>
+		<script  src="js/alert.js"></script>
+        
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+
+</script>
+
+
+
+
+    </body>
+
+</html>

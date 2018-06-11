@@ -181,7 +181,14 @@
 			
 			var b =document.getElementById("inputid");
 			var getid=b.value.LTrim();//空格要小心
+			
 			if(getid){
+				var  ppp =function() {
+					spop('患者'+b.value+'已登陆', 'success');
+					}
+					
+				ppp();
+				b.value="";	
 
 				showLoading({
 				title:"正在加载",
@@ -253,9 +260,16 @@
 			var a =document.getElementById("docadd");
 			a.style.display="block";
 			var b =document.getElementById("inputid");
+			
 			var getid=b.value.LTrim();
+			
 			if(getid){
-
+				var  ddd =function() {
+					spop('医生'+b.value+'已登陆', 'success');
+					}
+					
+				ddd();
+				b.value="";	
 			showLoading({
             title:"正在加载",
             mask:true,
